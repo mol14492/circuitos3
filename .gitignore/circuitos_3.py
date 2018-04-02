@@ -37,7 +37,7 @@ class App:
         self.title = Label(text=" Velocidad",font='Helvetica 12 bold', fg="black")
         self.title.grid(column = 1, row=6)
         ## Titulo3 ##
-        self.title = Label(text=" Gráfico",font='Helvetica 18 bold', fg="blue")
+        self.title = Label(text=" Grafico",font='Helvetica 18 bold', fg="blue")
         self.title.grid(column = 4, row=1) 
         ## BOTONES ##
         ## boton para enviar ##
@@ -53,7 +53,7 @@ class App:
         self.b_aumentar.grid(column=2, row=7)
         ## GRAFICA ## (FALTA AGREGAR COSOS)
         figura = Figure(figsize=(5,4))
-        grafica = figura.add_subplot(121)
+        grafica = figura.add_subplot(111)
         grafica.plot([1,2,3,4],[1,1,1,1])
         self.line, = grafica.plot(range(5))
         #Dibujar Grafica#
