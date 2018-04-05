@@ -4,7 +4,13 @@ import Tkinter
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 import serial as SR
-
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+from matplotlib import style
+import ttk
+import Tkinter
+from drawnow import *
+import matplotlib.animation as animation
 
 
 class App:
@@ -13,6 +19,8 @@ class App:
     
     def __init__(self, master):
         global variable
+        global variable2
+        variable2 = StringVar()
         variable = StringVar()
         ## SERIAL ##
         global ser          #Must be declared in Each Function
@@ -54,8 +62,7 @@ class App:
         ## GRAFICA ## (FALTA AGREGAR COSOS)
         figura = Figure(figsize=(5,4))
         grafica = figura.add_subplot(111)
-        grafica.plot([1,2,3,4],[1,1,1,1])
-        self.line, = grafica.plot(range(5))
+        self.line, = grafica.plot(range(100),'ro')
         #Dibujar Grafica#
         self.canvas = FigureCanvasTkAgg(figura,master=master)
         self.canvas.draw()
@@ -68,11 +75,6 @@ class App:
         self.l_recibir.grid(column=0, row=4)
         self.l_control = Label(text="Control Velocidad:")
         self.l_control.grid(column=0, row=7)
-        ## Entradas ##
-        #d_enviar = Entry()
-        #d_enviar.grid(column=1, row=1)
-        #print d_enviar
-        #str(variable.set(d_enviar))
         ## COMBO ##
         self.box = ttk.Combobox(root, textvariable=variable)
         self.box['values'] = ('A', 'a', 'B','b')
@@ -85,6 +87,7 @@ class App:
         
     def dato_recibido(self):
         d_temp = ser.readline()
+        variable2.set(d_temp)
         d_display=Text(master=root,height=1.25, width=16)
         d_display.grid(column=1, row=4)
         d_display.insert(INSERT,d_temp)
@@ -96,12 +99,19 @@ class App:
         print "Eviando..."+d_temp
         
     def disminuir_velocidad(self):
+        x,y = self.line.get_data()
+        self.line.set_ydata(y-0.2*x)
+        self.canvas.draw()
         print"Disminuyendo velocidad..."
 
     def aumentar_velocidad(self):
+        x,y = self.line.get_data()
+        d_temp=ord(ser.readline())
+        print d_temp
+        self.line.set_ydata(d_temp)
+        self.canvas.draw()
         print"Aumentando velocidad..."
 
-        
 root = Tkinter.Tk()
 root.title("Proyecto Circuitos 3")
 root.geometry('900x650')
