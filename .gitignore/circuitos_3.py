@@ -15,11 +15,25 @@ import matplotlib.animation as animation
 
 class App:
     ser = 0
-
-    
     def __init__(self, master):
+        def plot_graph():
+            grafica.plot(values)
+
+        def animate(i):
+            d_temp = ser.readline()
+            if d_temp==b'':
+                d_temp=chr(63)
+            else:
+                d_temp=d_temp
+            d_temp_int = ord(d_temp)
+            values.append(d_temp_int)
+            drawnow(plot_graph)
+        
+        ## VARIABLES ##
+        values=[]
         global variable
         global variable2
+        global grafica
         variable2 = StringVar()
         variable = StringVar()
         ## SERIAL ##
@@ -62,11 +76,12 @@ class App:
         ## GRAFICA ## (FALTA AGREGAR COSOS)
         figura = Figure(figsize=(5,4))
         grafica = figura.add_subplot(111)
-        self.line, = grafica.plot(range(100),'ro')
+        plt.ion()##
         #Dibujar Grafica#
         self.canvas = FigureCanvasTkAgg(figura,master=master)
         self.canvas.draw()
         self.canvas.get_tk_widget().grid(column=4, row=6)
+        self.animacion = animation.FuncAnimation(figura,animate,interval=100)
         ## Label para enviar ##
         self.l_enviar = Label(text="Escribe el caracter:")
         self.l_enviar.grid(column=0, row=1)
@@ -81,6 +96,7 @@ class App:
         self.box.current(0)
         self.box.grid(column=1, row=1)
 
+      
     def salir(self):
         print"Adios!"
         root.destroy()
